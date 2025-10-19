@@ -8,19 +8,17 @@
 
   onMount(async () => {
     // read last view position from indexedDb
-    const view = await views.get(src)
+    const viewed = await views.get(src)
 
-    if (view) {
+    if (viewed) {
       // restore last position
-      video.currentTime = view.position
+      video.currentTime = viewed.position
     }
   })
 
   function ontimeupdate() {
-    const position = video.currentTime
-
     // persist current position to indexedDb
-    views.put({ src, position })
+    views.put({ src, position: video.currentTime })
   }
 </script>
 
