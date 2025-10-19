@@ -20,7 +20,7 @@
     const position = video.currentTime
 
     // persist current position to indexedDb
-    views?.put({ src, position })
+    views.put({ src, position })
   }
 </script>
 
