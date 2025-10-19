@@ -1,11 +1,13 @@
 export type Options = {
   name: string
+  key?: string
   version?: number
 }
 
 export async function create_indexed_db<T>(options: Options): Promise<IndexedStore<T>> {
   const name = options.name
   const version = options.version || 1
+  const keyPath = options.key || 'id'
   const { promise, resolve, reject } = Promise.withResolvers<IndexedStore<T>>()
   const request = indexedDB.open(name, version)
 
@@ -18,7 +20,7 @@ export async function create_indexed_db<T>(options: Options): Promise<IndexedSto
   }
 
   request.onupgradeneeded = () => {
-    request.result.createObjectStore(name, { keyPath: 'id' })
+    request.result.createObjectStore(name, { keyPath })
   }
 
   return promise
