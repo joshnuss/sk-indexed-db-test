@@ -4,8 +4,10 @@
   let { src } = $props()
 
   let video: HTMLVideoElement
+  let loaded = false
 
   async function onloadedmetadata() {
+    loaded = true
     // read last view position from indexedDb
     const viewed = await views.get(src)
 
@@ -17,7 +19,7 @@
 
   function ontimeupdate() {
     // avoid overwriting position when `ontimeupdate` event fires before `onloadedmetadata`
-    if (video.currentTime == 0) return
+    if (!loaded) return
 
     // persist current position to indexedDb
     views.put({ src, position: video.currentTime })
